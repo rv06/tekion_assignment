@@ -19,7 +19,7 @@ public class CricketGame {
         // Enter players in the series you want them to Bat first
         Player team1Player1 = new Player("Virat Kohli", Player.Role.BATSMAN);
         Player team1Player2 = new Player("Rohit Sharma", Player.Role.BATSMAN);
-        Player team1Player3 = new Player("Kedar Jadhav", Player.Role.BATSMAN;
+        Player team1Player3 = new Player("Kedar Jadhav", Player.Role.BATSMAN);
         Player team1Player4 = new Player("K.L. Rahul", Player.Role.BATSMAN);
         Player team1Player5 = new Player("Ravindra Jadeja", Player.Role.ALLROUNDER);
         Player team1Player6 = new Player("Hardik Pandya",  Player.Role.ALLROUNDER);
