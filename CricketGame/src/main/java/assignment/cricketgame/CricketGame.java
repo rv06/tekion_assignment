@@ -27,7 +27,7 @@ public class CricketGame {
         Player team1Player8 = new Player("Jasprit Bumrah", Player.Role.BOWLER);
         Player team1Player9 = new Player("Mohammed Shami", Player.Role.BOWLER);
         Player team1Player10 = new Player("Kuldeep Yadav", Player.Role.BOWLER);
-        Player team1Player11 = new Player("Yuzvendra Chahal", Player.Role.BOWLER;
+        Player team1Player11 = new Player("Yuzvendra Chahal", Player.Role.BOWLER);
 
         team1Players.add(team1Player1);
         team1Players.add(team1Player2);
