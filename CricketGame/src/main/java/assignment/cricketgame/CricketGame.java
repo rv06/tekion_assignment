@@ -19,15 +19,15 @@ public class CricketGame {
         // Enter players in the series you want them to Bat first
         Player team1Player1 = new Player("Virat Kohli", Player.Role.BATSMAN);
         Player team1Player2 = new Player("Rohit Sharma", Player.Role.BATSMAN);
-        Player team1Player3 = new Player("Kedar Jadhav", Player.Role.BATSMAN;
+        Player team1Player3 = new Player("Kedar Jadhav", Player.Role.BATSMAN);
         Player team1Player4 = new Player("K.L. Rahul", Player.Role.BATSMAN);
+        Player team1Player7 = new Player("M.S Dhoni", Player.Role.BATSMAN);
         Player team1Player5 = new Player("Ravindra Jadeja", Player.Role.ALLROUNDER);
         Player team1Player6 = new Player("Hardik Pandya",  Player.Role.ALLROUNDER);
-        Player team1Player7 = new Player("M.S Dhoni", Player.Role.BATSMAN);
         Player team1Player8 = new Player("Jasprit Bumrah", Player.Role.BOWLER);
         Player team1Player9 = new Player("Mohammed Shami", Player.Role.BOWLER);
         Player team1Player10 = new Player("Kuldeep Yadav", Player.Role.BOWLER);
-        Player team1Player11 = new Player("Yuzvendra Chahal", Player.Role.BOWLER;
+        Player team1Player11 = new Player("Yuzvendra Chahal", Player.Role.BOWLER);
 
         team1Players.add(team1Player1);
         team1Players.add(team1Player2);
@@ -45,9 +45,9 @@ public class CricketGame {
         Player team2Player2 = new Player("Fakhar Zaman", Player.Role.BATSMAN);
         Player team2Player3 = new Player("Haris Sohail", Player.Role.BATSMAN);
         Player team2Player4 = new Player("Asif Ali", Player.Role.BATSMAN);
-        Player team2Player5 = new Player("Shoaib Malik", Player.Role.ALLROUNDER);
         Player team2Player6 = new Player("Mohammed Hafeez", Player.Role.BATSMAN);
         Player team2Player7 = new Player("Sarfaraz Ahmed", Player.Role.BATSMAN);
+        Player team2Player5 = new Player("Shoaib Malik", Player.Role.ALLROUNDER);
         Player team2Player8 = new Player("Shaheen Afridi", Player.Role.BOWLER);
         Player team2Player9 = new Player("Wahab Riaz", Player.Role.BOWLER);
         Player team2Player10 = new Player("Mohammad Hasnain", Player.Role.BOWLER);

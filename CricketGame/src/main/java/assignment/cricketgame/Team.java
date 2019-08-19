@@ -21,27 +21,27 @@ public class Team {
     }
 
     public void out() {
-        wickets++;
+        this.wickets++;
     }
 
     public void addRuns(int n) {
-        runs += n;
+        this.runs += n;
     }
 
     public int getWickets() {
-        return wickets;
+        return this.wickets;
     }
 
     public int getRuns() {
-        return runs;
+        return this.runs;
     }
 
     public String getTeamName() {
-        return teamName;
+        return this.teamName;
     }
 
     public List<Player> getTeam() {
-        return team;
+        return this.team;
     }
 
     public Player getPlayer(int n) {

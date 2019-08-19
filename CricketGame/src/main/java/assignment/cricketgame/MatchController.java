@@ -26,6 +26,8 @@ public class MatchController {
 
         match.startInnings(match.getTeamToBatSecond());
 
+        match.getScoreBoard();
+
         match.getMatchResult();
 
         endMatch();

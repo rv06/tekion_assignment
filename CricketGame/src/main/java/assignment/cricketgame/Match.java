@@ -2,6 +2,8 @@ package assignment.cricketgame;
 
 
 import org.slf4j.*;
+
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Match {
@@ -11,6 +13,9 @@ public class Match {
 
     private Team teamToBatFirst;
     private Team teamToBatSecond;
+    private Player striker;
+    private Player nonStriker;
+    private Player currentBowler;
     private boolean isSecondInning = true;
     private Match() {
     }
@@ -31,27 +36,49 @@ public class Match {
         int overs = 0;
         isAllOut = false;
         isSecondInning = !isSecondInning;
+        striker = team.getPlayer(0);
+        nonStriker = team.getPlayer(1);
         while(!isAllOut && overs < OVERSPERINNINGS) {
             int[] currentOverResult = overOutcome();
+            currentBowler = !isSecondInning ? teamToBatSecond.getPlayer(ThreadLocalRandom.current().nextInt(6,11)) : teamToBatFirst.getPlayer(ThreadLocalRandom.current().nextInt(6,11));
+            currentBowler.addOvers();
             for (int i : currentOverResult) {
+
                 if(i == 7) {
                     team.out();
-                    LOGGER.info("Player " + team.getPlayer(team.getWickets()).getName() + " lost his wicket.");
+                    striker.addballsPlayed();
+                    currentBowler.addWicketsTaken();
                     if(team.getWickets() >= 10) {
                         isAllOut = true;
                         break;
                     }
+                    else {
+                        System.out.println(team.getWickets() + 1);
+                        striker = team.getPlayer(team.getWickets() + 1);
+                    }
+
+                    //LOGGER.info("Player " + team.getPlayer(team.getWickets()).getName() + " lost his wicket.");
+
+
                 }
                 else {
                     LOGGER.info(i + " runs added to team " + team.getTeamName() + "'s score");
+                    striker.addRuns(i);
                     team.addRuns(i);
+                    striker.addballsPlayed();
+                    currentBowler.addRunsconceded(i);
+                    changeStrike(striker, nonStriker,i);
+
                     if(isSecondInning) {
+                        System.out.println("here " + teamToBatSecond.getRuns() + "  "  + teamToBatFirst.getRuns());
+
                         if(teamToBatSecond.getRuns() > teamToBatFirst.getRuns()) {
                             overs = 20;
                             break;
                         }
                     }
                 }
+
             }
             overs++;
         }
@@ -77,6 +104,40 @@ public class Match {
         return  result.nextInt(0,8);
     }
 
+    public void getScoreBoard() {
+        LOGGER.info("\n************************************************************\n" +
+                    "                         Score Board                        \n" +
+                    "************************************************************\n ");
+
+        LOGGER.info("Team : " + teamToBatFirst.getTeamName() + "\t " +  teamToBatFirst.getRuns() + "-" + teamToBatFirst.getWickets() + "\n");
+        System.out.println(String.format("%-20s%-5s%-5s%-5s%-5s","Batsman", "R" ,"B", "4s", "6s"));
+        for(Player p : teamToBatFirst.getTeam())
+            System.out.println(String.format("%-20s%-5s%-5s%-5s%-5s" ,p.getName(), p.gettotalRuns(),  p.getBallsPlayed() ,p.getFours(), p.getSixes()));
+
+        System.out.println("\nBowling Stats");
+        System.out.println(String.format("%-20s%-5s%-5s%-5s","Bowler", "O" ,"R", "W"));
+        int index = 6;
+        List<Player> playerList = teamToBatSecond.getTeam();
+        for(int i = 10; i>=6;i--) {
+            Player p = playerList.get(i);
+            System.out.println(String.format("%-20s%-5s%-5s%-5s" ,p.getName(), p.getOversBowled(), p.getRunsConceded(), p.getWicketsTaken()));
+        }
+
+        LOGGER.info("Team : " + teamToBatSecond.getTeamName() + "\t " +  teamToBatSecond.getRuns() + "-" + teamToBatSecond.getWickets() + "\n");
+        System.out.println(String.format("%-20s%-5s%-5s%-5s%-5s","Batsman", "R" ,"B", "4s", "6s"));
+        for(Player p : teamToBatSecond.getTeam())
+            System.out.println(String.format("%-20s%-5s%-5s%-5s%-5s" ,p.getName(), p.gettotalRuns(),  p.getBallsPlayed() ,p.getFours(), p.getSixes()));
+
+        System.out.println("\nBowling Stats");
+        index = 6;
+        System.out.println(String.format("%-20s%-5s%-5s%-5s","Bowler", "O" ,"R", "W"));
+        playerList = teamToBatFirst.getTeam();
+        for(int i = 10; i>=6;i--) {
+            Player p = playerList.get(i);
+            System.out.println(String.format("%-20s%-5s%-5s%-5s" ,p.getName(), p.getOversBowled(), p.getRunsConceded(), p.getWicketsTaken()));
+        }
+
+    }
     public void getMatchResult() {
         LOGGER.info("Team to bat first was: " + teamToBatFirst.getTeamName() + " and scored " + teamToBatFirst.getRuns() + " runs");
 
@@ -104,6 +165,13 @@ public class Match {
         return teamToBatSecond;
     }
 
+    private void changeStrike(Player player1, Player player2, int i) {
+        if(i == 1 || i == 3) {
+            Player change = striker;
+            striker = nonStriker;
+            nonStriker = change;
+        }
+    }
     public static Match getInstance() {
         if(match == null)
             match = new Match();
