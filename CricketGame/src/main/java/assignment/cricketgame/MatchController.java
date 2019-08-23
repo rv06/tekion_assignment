@@ -45,7 +45,6 @@ public class MatchController {
                              1 -> Team2 won toss
          */
         int tossResult = random.nextInt(0,2);
-        System.out.println(tossResult);
         if(tossResult == 0)
             chooseOption(team1, team2);
         else
@@ -60,7 +59,6 @@ public class MatchController {
             Toss result -->  0 -> Bar first
                              1 -> Bowl first
          */
-        System.out.println(batOrBowl);
         if(batOrBowl == 0)
         {
            match.setBattingOrder(team1, team2);

@@ -1,5 +1,7 @@
 package assignment.cricketgame;
 
+import java.text.DecimalFormat;
+
 public class Player {
     private String name;
     private int fours;
@@ -9,6 +11,12 @@ public class Player {
     private int wicketsTaken;
     private int runsConceded;
     private int oversBowled;
+    private DecimalFormat decimalFormat = new DecimalFormat("#.##");
+
+
+
+    private float strikeRate;
+    private float economy;
     private Role role;
     public static enum Role {
         BATSMAN, BOWLER, ALLROUNDER;
@@ -26,6 +34,8 @@ public class Player {
         this.wicketsTaken = 0;
         this.oversBowled = 0;
         this.runsConceded = 0;
+        this.strikeRate = 0.0f;
+        this.economy = 0.0f;
     }
 
 
@@ -87,5 +97,26 @@ public class Player {
             addFours();
         else if(n == 6)
             addSixes();
+    }
+    public float getStrikeRate() {
+        this.strikeRate = Float.valueOf(decimalFormat.format(computeStrikeRate())) * 100;
+        return  this.strikeRate;
+    }
+
+    public float getEconomy() {
+        this.economy = Float.valueOf(decimalFormat.format(computeEconomy()));
+        return  this.economy;
+    }
+    private float computeStrikeRate() {
+        if(ballsPlayed == 0)
+            return 0;
+        else
+            return (float)totalRuns / ballsPlayed;
+    }
+    private float computeEconomy() {
+        if(oversBowled == 0)
+            return 0;
+        else
+            return (float)runsConceded / oversBowled;
     }
 }

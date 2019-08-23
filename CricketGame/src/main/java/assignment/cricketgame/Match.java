@@ -53,7 +53,6 @@ public class Match {
                         break;
                     }
                     else {
-                        System.out.println(team.getWickets() + 1);
                         striker = team.getPlayer(team.getWickets() + 1);
                     }
 
@@ -70,8 +69,6 @@ public class Match {
                     changeStrike(striker, nonStriker,i);
 
                     if(isSecondInning) {
-                        System.out.println("here " + teamToBatSecond.getRuns() + "  "  + teamToBatFirst.getRuns());
-
                         if(teamToBatSecond.getRuns() > teamToBatFirst.getRuns()) {
                             overs = 20;
                             break;
@@ -109,33 +106,14 @@ public class Match {
                     "                         Score Board                        \n" +
                     "************************************************************\n ");
 
-        LOGGER.info("Team : " + teamToBatFirst.getTeamName() + "\t " +  teamToBatFirst.getRuns() + "-" + teamToBatFirst.getWickets() + "\n");
-        System.out.println(String.format("%-20s%-5s%-5s%-5s%-5s","Batsman", "R" ,"B", "4s", "6s"));
-        for(Player p : teamToBatFirst.getTeam())
-            System.out.println(String.format("%-20s%-5s%-5s%-5s%-5s" ,p.getName(), p.gettotalRuns(),  p.getBallsPlayed() ,p.getFours(), p.getSixes()));
 
-        System.out.println("\nBowling Stats");
-        System.out.println(String.format("%-20s%-5s%-5s%-5s","Bowler", "O" ,"R", "W"));
-        int index = 6;
-        List<Player> playerList = teamToBatSecond.getTeam();
-        for(int i = 10; i>=6;i--) {
-            Player p = playerList.get(i);
-            System.out.println(String.format("%-20s%-5s%-5s%-5s" ,p.getName(), p.getOversBowled(), p.getRunsConceded(), p.getWicketsTaken()));
-        }
+        printBattingScoreCard(teamToBatFirst);
 
-        LOGGER.info("Team : " + teamToBatSecond.getTeamName() + "\t " +  teamToBatSecond.getRuns() + "-" + teamToBatSecond.getWickets() + "\n");
-        System.out.println(String.format("%-20s%-5s%-5s%-5s%-5s","Batsman", "R" ,"B", "4s", "6s"));
-        for(Player p : teamToBatSecond.getTeam())
-            System.out.println(String.format("%-20s%-5s%-5s%-5s%-5s" ,p.getName(), p.gettotalRuns(),  p.getBallsPlayed() ,p.getFours(), p.getSixes()));
+        printBowlingScoreCard(teamToBatSecond);
 
-        System.out.println("\nBowling Stats");
-        index = 6;
-        System.out.println(String.format("%-20s%-5s%-5s%-5s","Bowler", "O" ,"R", "W"));
-        playerList = teamToBatFirst.getTeam();
-        for(int i = 10; i>=6;i--) {
-            Player p = playerList.get(i);
-            System.out.println(String.format("%-20s%-5s%-5s%-5s" ,p.getName(), p.getOversBowled(), p.getRunsConceded(), p.getWicketsTaken()));
-        }
+        printBattingScoreCard(teamToBatSecond);
+
+        printBowlingScoreCard(teamToBatFirst);
 
     }
     public void getMatchResult() {
@@ -170,6 +148,22 @@ public class Match {
             Player change = striker;
             striker = nonStriker;
             nonStriker = change;
+        }
+    }
+    private void printBattingScoreCard(Team team) {
+        System.out.println("\nTeam : " + team.getTeamName() + "\t " +  team.getRuns() + "-" + team.getWickets());
+        System.out.println(String.format("%-20s%-5s%-5s%-5s%-5s%-5s","Batsman", "R" ,"B", "4s", "6s", "SR"));
+        for(Player p : team.getTeam())
+            System.out.println(String.format("%-20s%-5s%-5s%-5s%-5s%-5s" ,p.getName(), p.gettotalRuns(),  p.getBallsPlayed() ,p.getFours(), p.getSixes(), p.getStrikeRate()));
+    }
+
+    private void printBowlingScoreCard(Team team) {
+        System.out.println("\nBowling Stats : " + team.getTeamName());
+        System.out.println(String.format("%-20s%-5s%-5s%-5s%-5s","Bowler", "O" ,"R", "W", "E"));
+        List<Player> playerList = team.getTeam();
+        for(int i = 10; i>=6;i--) {
+            Player p = playerList.get(i);
+            System.out.println(String.format("%-20s%-5s%-5s%-5s%-5s" ,p.getName(), p.getOversBowled(), p.getRunsConceded(), p.getWicketsTaken(), p.getEconomy()));
         }
     }
     public static Match getInstance() {
