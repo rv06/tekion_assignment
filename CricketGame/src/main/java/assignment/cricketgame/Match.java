@@ -3,6 +3,7 @@ package assignment.cricketgame;
 
 import org.slf4j.*;
 
+import java.sql.Connection;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -17,6 +18,8 @@ public class Match {
     private Player nonStriker;
     private Player currentBowler;
     private boolean isSecondInning = true;
+    private DbConnect dbConnect = DbConnect.getInstance();
+    private static int matchId;
     private Match() {
     }
 
@@ -27,6 +30,7 @@ public class Match {
     public void setBattingOrder(Team team1, Team team2) {
         teamToBatFirst = team1;
         teamToBatSecond = team2;
+        matchId = dbConnect.updateMatchTable(teamToBatFirst.getTeamName(), teamToBatSecond.getTeamName());
         LOGGER.info("Team batting first is - " + teamToBatFirst.getTeamName());
     }
     /*
@@ -38,8 +42,10 @@ public class Match {
         isSecondInning = !isSecondInning;
         striker = team.getPlayer(0);
         nonStriker = team.getPlayer(1);
+        int overCompleted;
         while(!isAllOut && overs < OVERSPERINNINGS) {
             int[] currentOverResult = overOutcome();
+            overCompleted = overs;
             currentBowler = !isSecondInning ? teamToBatSecond.getPlayer(ThreadLocalRandom.current().nextInt(6,11)) : teamToBatFirst.getPlayer(ThreadLocalRandom.current().nextInt(6,11));
             currentBowler.addOvers();
             for (int i : currentOverResult) {
@@ -78,6 +84,8 @@ public class Match {
 
             }
             overs++;
+            dbConnect.updateMatchData(matchId, overCompleted+1, team);
+
         }
     }
 
@@ -120,19 +128,26 @@ public class Match {
         LOGGER.info("Team to bat first was: " + teamToBatFirst.getTeamName() + " and scored " + teamToBatFirst.getRuns() + " runs");
 
         LOGGER.info("Team to bat second was: " + teamToBatSecond.getTeamName() + " and scored " + teamToBatSecond.getRuns() + " runs");
-
-        int result = Integer.compare(teamToBatFirst.getRuns(), teamToBatSecond.getRuns());
-        if(result > 0) {
+        String scoreFirstInnings = teamToBatFirst.getRuns() + "-" + teamToBatFirst.getWickets();
+        String scoreSecondInnings = teamToBatSecond.getRuns() + "-" + teamToBatSecond.getWickets();
+        String result;
+        int compare = Integer.compare(teamToBatFirst.getRuns(), teamToBatSecond.getRuns());
+        if(compare > 0) {
             LOGGER.info(teamToBatFirst.getTeamName() + " won by " + (teamToBatFirst.getRuns() - teamToBatSecond.getRuns()) + " runs");
+            result = teamToBatFirst.getTeamName() + " won by " + (teamToBatFirst.getRuns() - teamToBatSecond.getRuns()) + " runs";
+            dbConnect.updateMatchResult(matchId, scoreFirstInnings, scoreSecondInnings, result);
 
         }
-        else if(result<0) {
+        else if(compare<0) {
             LOGGER.info(teamToBatSecond.getTeamName() + " won by " + (10 - teamToBatSecond.getWickets()) + " wickets.");
-
+            result = teamToBatSecond.getTeamName() + " won by " + (10 - teamToBatSecond.getWickets()) + " wickets.";
+            dbConnect.updateMatchResult(matchId, scoreFirstInnings, scoreSecondInnings, result);
         }
-        else
+        else {
             LOGGER.info("It's a tie...");
-
+            result = "It's a tie...";
+            dbConnect.updateMatchResult(matchId, scoreFirstInnings, scoreSecondInnings, result);
+        }
     }
 
     public Team getTeamToBatFirst() {
